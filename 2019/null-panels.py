@@ -2,9 +2,11 @@
 # on the outcome of a match, including the win percentage and average
 # score difference.
 
-import tbapy
 import json
 import os
+import sys
+
+import tbapy
 
 with open('../key.txt') as keyfile:
     key = keyfile.read().strip()
@@ -46,6 +48,12 @@ for match in complete_matches:
     if match['winning_alliance'] == '' or match['score_breakdown'] is None:
         continue
 
+    if '--elims' in sys.argv and match['comp_level'] == 'qm':
+        continue
+
+    if '--quals' in sys.argv and match['comp_level'] != 'qm':
+        continue
+
     for alliance in ['red', 'blue']:
         null_panels = 0
         for bay in [1, 2, 3, 6, 7, 8]:
@@ -59,7 +67,12 @@ print('| null panels loaded | win ratio | score diff | instances |')
 print('| --- | --- | --- | --- |')
 for num in panels:
     total_matches = panels[num]['win'] + panels[num]['loss']
-    win_ratio = round(panels[num]['win'] / total_matches, 3)
-    score_diff = round(panels[num]['margin'] / total_matches, 3)
+
+    win_ratio = 0
+    score_diff = 0
+
+    if total_matches > 0:
+        win_ratio = round(panels[num]['win'] / total_matches, 3)
+        score_diff = round(panels[num]['margin'] / total_matches, 3)
 
     print('| {} | {} | {} | {} |'.format(num, win_ratio, score_diff, total_matches))
