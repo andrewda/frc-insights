@@ -82,7 +82,7 @@ for num in levels:
 
     to_print.append((num, win_ratio, score_diff, total_matches))
 
-to_print = sorted(to_print, key=lambda a: a[2], reverse=True)
+to_print = sorted(to_print, key=lambda a: a[1], reverse=True)
 
 print('Total matches: {}\n'.format(len(complete_matches)))
 print('| climb levels | win ratio | avg score | instances |')
