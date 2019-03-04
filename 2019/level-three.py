@@ -15,7 +15,8 @@ file = '../matches.json'
 
 tba = tbapy.TBA(key)
 
-events = tba.events(2019)
+weeks = [0]
+events = filter(lambda e: e['week'] in weeks, tba.events(2019))
 
 complete_matches = []
 
@@ -23,6 +24,8 @@ complete_matches = []
 if not os.path.isfile(file):
     for event in events:
         matches = tba.event_matches(event['key'])
+
+        print('Gathered {} matches from {}'.format(len(matches), event['key']))
 
         for match in matches:
             if match['actual_time'] is not None:

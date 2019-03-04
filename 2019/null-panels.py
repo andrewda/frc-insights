@@ -15,7 +15,8 @@ file = '../matches.json'
 
 tba = tbapy.TBA(key)
 
-events = tba.events(2019)
+weeks = [0]
+events = filter(lambda e: e['week'] in weeks, tba.events(2019))
 
 complete_matches = []
 
